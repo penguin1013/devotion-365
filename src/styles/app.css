@@ -737,6 +737,73 @@ button.card {
   gap: 2px;
 }
 
+.icon-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* 'YYYY년 M월' 제목 버튼: 눌러서 연·월 고르기를 연다 */
+.month-title-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin: -6px 0 -6px -6px;
+  padding: 0 8px 0 6px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.month-title-caret {
+  display: inline-flex;
+  margin-left: -4px;
+  color: var(--color-text-hint);
+}
+
+.month-title-btn:active {
+  background: var(--color-bg-canvas);
+}
+
+/* 연·월 고르기: 3칸 × 4줄 */
+.ym-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 12px 4px 4px;
+}
+
+.ym-cell {
+  min-height: 56px;
+  border: none;
+  border-radius: 14px;
+  background: var(--color-bg-canvas);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-strong);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ym-cell:active {
+  filter: brightness(0.95);
+}
+
+.ym-cell.is-today {
+  box-shadow: inset 0 0 0 2px var(--color-text-strong);
+}
+
+.ym-cell.is-selected {
+  background: var(--brand-primary);
+  color: var(--brand-on);
+  font-weight: 700;
+}
+
 .month-week,
 .month-grid {
   display: grid;

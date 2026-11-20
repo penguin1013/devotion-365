@@ -1,9 +1,13 @@
-import { useState } from 'react';
-import { MonthGrid, type Month } from '../components/MonthGrid';
-import { ChevronRight } from '../components/icons';
-import { CalendarIcon } from '../components/appIcons';
-import { TOTAL_DAYS } from '../content/days';
-import { dateOfDay, fmtDot, parseYmd } from '../lib/date';
+import { useState } from "react";
+import {
+  MonthGrid,
+  YearMonthPicker,
+  type Month,
+} from "../components/MonthGrid";
+import { ChevronRight } from "../components/icons";
+import { CalendarIcon } from "../components/appIcons";
+import { TOTAL_DAYS } from "../content/days";
+import { dateOfDay, fmtDot, parseYmd } from "../lib/date";
 
 export function StartSummary({ start }: { start: string }) {
   return (
@@ -37,22 +41,48 @@ export function StartPicker({
     const { y, m } = parseYmd(value);
     return { y, m };
   });
+  const [pickingMonth, setPickingMonth] = useState(false);
+  const now = parseYmd(today);
   return (
     <div className="card calendar-card">
-      <MonthGrid
-        month={month}
-        onMonthChange={setMonth}
-        onSelect={onChange}
-        cell={(date) => ({
-          className: [date === value ? 'is-selected' : '', date === today ? 'is-today' : ''].join(' '),
-          label: `${fmtDot(date)}${date === value ? ', 선택됨' : ''}`,
-        })}
-      />
+      {pickingMonth ? (
+        <YearMonthPicker
+          value={month}
+          current={{ y: now.y, m: now.m }}
+          minYear={now.y - 10}
+          maxYear={now.y + 2}
+          onPick={(m) => {
+            setMonth(m);
+            setPickingMonth(false);
+          }}
+          onClose={() => setPickingMonth(false)}
+        />
+      ) : (
+        <MonthGrid
+          month={month}
+          onMonthChange={setMonth}
+          onTitleClick={() => setPickingMonth(true)}
+          onSelect={onChange}
+          cell={(date) => ({
+            className: [
+              date === value ? "is-selected" : "",
+              date === today ? "is-today" : "",
+            ].join(" "),
+            label: `${fmtDot(date)}${date === value ? ", 선택됨" : ""}`,
+          })}
+        />
+      )}
     </div>
   );
 }
 
-export function Onboarding({ today, onStart }: { today: string; onStart: (start: string) => void }) {
+export function Onboarding({
+  today,
+  onStart,
+}: {
+  today: string;
+  onStart: (start: string) => void;
+}) {
   const [start, setStart] = useState(today);
   return (
     <div className="screen">
@@ -74,7 +104,11 @@ export function Onboarding({ today, onStart }: { today: string; onStart: (start:
         <StartSummary start={start} />
       </main>
       <div className="dock dock-safe">
-        <button type="button" className="btn btn-primary btn-cta" onClick={() => onStart(start)}>
+        <button
+          type="button"
+          className="btn btn-primary btn-cta"
+          onClick={() => onStart(start)}
+        >
           이 날부터 시작하기
         </button>
       </div>
