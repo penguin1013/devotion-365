@@ -1,0 +1,9 @@
+# 웹사이트 버전(https://devotion-365.netlify.app) 자동 배포 설정.
+# GitHub main 브랜치에 push하면 Netlify가 이 설정대로 빌드해서 올린다.
+# 토스 미니앱 번들(.ait)과는 관계없다. 토스는 콘솔 업로드와 검수로 따로 올린다.
+[build]
+  command = "npm run build:web"
+  publish = "dist-web"
+
+[build.environment]
+  NODE_VERSION = "24"

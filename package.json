@@ -8,7 +8,10 @@
     "build": "tsc -b && vite build && ait build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "deploy": "ait deploy"
+    "deploy": "ait deploy",
+    "dev:web": "vite --mode web",
+    "build:web": "tsc -b && vite build --mode web",
+    "preview:web": "vite preview --mode web --outDir dist-web"
   },
   "dependencies": {
     "react": "^19.3.1",

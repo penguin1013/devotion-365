@@ -99,7 +99,9 @@ export function SettingsScreen({ state, today, onChangeStart, onChangeScale, onE
             </button>
           </div>
           <p className="footnote">
-            기록은 이 휴대폰에만 저장돼요. 토스 앱을 지우면 기록도 함께 지워지니, 가끔 내보내기로 따로 보관해 두세요.
+            {import.meta.env.MODE === 'web'
+              ? '기록은 이 휴대폰의 브라우저에만 저장돼요. 브라우저의 방문 기록과 사이트 데이터를 지우면 기록도 함께 지워지니, 가끔 내보내기로 따로 보관해 두세요.'
+              : '기록은 이 휴대폰에만 저장돼요. 토스 앱을 지우면 기록도 함께 지워지니, 가끔 내보내기로 따로 보관해 두세요.'}
           </p>
         </section>
       </main>

@@ -37,3 +37,6 @@ docs/KakaoTalk_*.jpg
 
 # 콘솔 웹 제출용 복사본(assets/에 원본 있음)
 검수제출용/
+
+# 웹사이트 버전 빌드 결과
+dist-web
