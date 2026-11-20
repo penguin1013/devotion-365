@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { BookIcon } from '../components/appIcons';
+import { Dialog } from '../components/ui';
 import { TAGS, getEntry } from '../content/days';
 import type { DayRecord } from '../lib/state';
 
@@ -9,13 +10,15 @@ type Props = {
   day: number;
   record?: DayRecord;
   onSave: (note: string, tags: string[]) => void;
+  onDelete: () => void;
   onDirtyChange: (dirty: boolean) => void;
 };
 
-export function WriteScreen({ day, record, onSave, onDirtyChange }: Props) {
+export function WriteScreen({ day, record, onSave, onDelete, onDirtyChange }: Props) {
   const entry = getEntry(day);
   const [note, setNote] = useState(record?.note ?? '');
   const [tags, setTags] = useState<string[]>(record?.tags ?? []);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const editing = record?.status === 'done';
 
   const dirty = useMemo(
@@ -78,6 +81,14 @@ export function WriteScreen({ day, record, onSave, onDirtyChange }: Props) {
             ))}
           </div>
         </fieldset>
+
+        {editing && (
+          <div className="delete-record">
+            <button type="button" className="text-btn danger" onClick={() => setConfirmDelete(true)}>
+              이 날 기록 지우기
+            </button>
+          </div>
+        )}
       </main>
       <div className="dock dock-safe dock-plain">
         <button
@@ -89,6 +100,21 @@ export function WriteScreen({ day, record, onSave, onDirtyChange }: Props) {
           {editing ? '수정한 내용 저장하기' : `기록하고 ${day}일차 완료`}
         </button>
       </div>
+
+      {confirmDelete && (
+        <Dialog
+          title={`${day}일차 기록을 지울까요?`}
+          description="남긴 느낀점과 마음 태그가 지워지고, 이 날은 다시 미완료가 돼요. 되돌릴 수 없어요."
+          cancelLabel="취소"
+          confirmLabel="지우기"
+          danger
+          onCancel={() => setConfirmDelete(false)}
+          onConfirm={() => {
+            setConfirmDelete(false);
+            onDelete();
+          }}
+        />
+      )}
     </div>
   );
 }

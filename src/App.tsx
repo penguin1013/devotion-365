@@ -145,6 +145,16 @@ export default function App() {
           void hapticSuccess();
           setToast(`${day}일차 묵상을 기록했어요`);
         }}
+        onDelete={() => {
+          // 글을 읽은 기록은 남기고 느낀점·태그만 지운다(완료 → 미완료)
+          update((s) => ({
+            ...s,
+            records: { ...s.records, [day]: { status: 'read', updatedAt: new Date().toISOString() } },
+          }));
+          writeDirty.current = false;
+          pop();
+          setToast(`${day}일차 기록을 지웠어요`);
+        }}
       />
     );
   } else if (top?.name === 'day') {

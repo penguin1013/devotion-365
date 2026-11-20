@@ -898,6 +898,18 @@ button.card {
   color: var(--color-danger);
 }
 
+/* 느낀점 수정 화면의 '이 날 기록 지우기' */
+.delete-record {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-6);
+}
+
+.text-btn.danger {
+  background: transparent;
+  color: var(--color-danger);
+}
+
 .row-sub {
   font-size: var(--font-size-caption);
   color: var(--color-text-subtle);
