@@ -27,3 +27,10 @@ dist-ssr
 
 # Apps in Toss design-guide failure trace
 .ait-design-guide-failed
+
+# 원고 원본·참고 사진은 저장소에 올리지 않는다(사용 허락 범위 밖 공개 방지, 용량)
+docs/*.pdf
+docs/KakaoTalk_*.jpg
+
+# 로컬 설정
+.claude/settings.local.json
