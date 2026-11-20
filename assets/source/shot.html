@@ -1,0 +1,20 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+html,body{margin:0;width:636px;height:1048px;overflow:hidden}
+body{background:radial-gradient(120% 70% at 50% 0%,#ffd84d 0%,#fdc300 55%,#f7b900 100%);font-family:'Pretendard Variable',Pretendard,sans-serif;color:#191f28;word-break:keep-all;position:relative}
+.head{position:absolute;top:66px;left:0;right:0;text-align:center}
+.eyebrow{display:inline-block;padding:7px 16px;border-radius:999px;background:rgba(25,31,40,.9);color:#fdc300;font-size:20px;font-weight:700;letter-spacing:-.2px}
+h1{margin:20px 0 0;font-size:46px;line-height:1.28;font-weight:700;letter-spacing:-1.4px}
+.phone{position:absolute;left:50%;top:310px;transform:translateX(-50%);width:416px;padding:12px;border-radius:52px;background:#191f28;box-shadow:0 30px 60px rgba(80,55,0,.28)}
+.screen{width:416px;height:900px;border-radius:40px;overflow:hidden;background:#f2f2f7}
+.screen img{width:416px;display:block}
+</style></head><body>
+<div class="head"><span class="eyebrow" id="e"></span><h1 id="t"></h1></div>
+<div class="phone"><div class="screen"><img id="i"></div></div>
+<script>
+const p=new URLSearchParams(location.search);
+document.getElementById('e').textContent=p.get('e');
+document.getElementById('t').innerHTML=p.get('t');
+document.getElementById('i').src=p.get('i');
+</script></body></html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>오늘의 말씀 365 — 화면 예시</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --bg:#F2F2F7; --card:#fff; --label:#1C1C1E; --label2:#8E8E93; --label3:#C7C7CC;
+    --sep:#E5E5EA; --accent:#3182F6; --accent-soft:#E8F1FE; --warm:#F6F1E9; --warm-ink:#6B5A43;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Apple SD Gothic Neo","Pretendard",system-ui,sans-serif;
+    background:linear-gradient(180deg,#e9ecf2,#dfe3ea); color:var(--label);
+    -webkit-font-smoothing:antialiased; padding:48px 24px 64px;
+  }
+  header.page{max-width:1500px;margin:0 auto 36px;text-align:center}
+  header.page h1{font-size:28px;font-weight:700;letter-spacing:-.5px}
+  header.page p{color:#6b7280;margin-top:6px;font-size:15px}
+  .row{display:flex;gap:36px;justify-content:center;flex-wrap:wrap;max-width:1600px;margin:0 auto}
+  .item{display:flex;flex-direction:column;align-items:center;gap:14px}
+  .cap{font-size:14px;font-weight:600;color:#4b5563}
+  .cap span{display:inline-block;width:22px;height:22px;border-radius:50%;background:#1C1C1E;color:#fff;font-size:12px;line-height:22px;text-align:center;margin-right:6px}
+
+  /* phone */
+  .phone{width:340px;height:720px;border-radius:52px;background:#111;padding:11px;box-shadow:0 30px 60px -20px rgba(0,0,0,.35)}
+  .screen{position:relative;width:100%;height:100%;border-radius:42px;background:var(--bg);overflow:hidden;display:flex;flex-direction:column}
+  .status{height:48px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:6px 28px 0;font-size:15px;font-weight:600}
+  .island{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:100px;height:30px;border-radius:20px;background:#000;z-index:5}
+  .sicons{display:flex;gap:5px;align-items:center}
+  .sicons i{display:block;background:var(--label);border-radius:2px}
+  .navbar{height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:17px}
+  .navbar .back{color:var(--accent);font-size:17px}
+  .navbar .ttl{font-weight:600}
+  .navbar .act{color:var(--accent);font-weight:600}
+  .content{flex:1;overflow:hidden;padding:0 16px}
+  .large{font-size:32px;font-weight:700;letter-spacing:-.6px;line-height:1.15}
+  .sub{color:var(--label2);font-size:14px}
+  .card{background:var(--card);border-radius:20px;padding:18px}
+  .btn{height:54px;border-radius:16px;background:var(--accent);color:#fff;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;border:none;width:100%}
+  .bottom{flex:none;padding:12px 16px 30px;background:linear-gradient(180deg,rgba(242,242,247,0),var(--bg) 30%)}
+  .tabbar{flex:none;height:82px;display:flex;justify-content:space-around;padding-top:8px;border-top:.5px solid rgba(0,0,0,.08);background:rgba(249,249,251,.85);backdrop-filter:blur(20px)}
+  .tab{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--label2);font-weight:500}
+  .tab.on{color:var(--accent)}
+  .tab svg{width:25px;height:25px}
+
+  /* calendar */
+  .cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .cal-head b{font-size:17px}
+  .cal-head .arr{color:var(--accent);font-size:18px;display:flex;gap:22px}
+  .wk,.grid{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
+  .wk div{font-size:11px;color:var(--label2);font-weight:600;padding-bottom:6px}
+  .grid .d{height:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:16px;position:relative}
+  .grid .d.mute{color:var(--label3)}
+  .grid .d.sel span{background:var(--accent);color:#fff;font-weight:600}
+  .grid .d span{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .grid .d.range span{background:var(--accent-soft);color:var(--accent)}
+  .grid .d.today span{box-shadow:inset 0 0 0 2px var(--accent);color:var(--accent);font-weight:700}
+
+  .grid2 .d{height:48px}
+  .grid2 .d small{font-size:9px;color:var(--label2);margin-top:1px;height:10px}
+  .grid2 .d span{width:30px;height:30px;font-size:15px}
+  .grid2 .d.done span{background:var(--accent);color:#fff;font-weight:600}
+  .grid2 .d.read span{background:var(--accent-soft);color:var(--accent)}
+  .grid2 .d.miss span{color:var(--label2)}
+  .grid2 .d.start span{box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--accent)}
+  .grid2 .d.today span{background:#fff;box-shadow:inset 0 0 0 2px var(--accent);color:var(--accent);font-weight:700}
+  .grid2 .d.future span{color:var(--label)}
+  .tagstart{position:absolute;top:-6px;font-size:8.5px;font-weight:700;color:var(--accent);background:var(--card);padding:0 3px}
+
+  .chip{display:inline-flex;align-items:center;height:34px;padding:0 14px;border-radius:17px;background:var(--card);font-size:14px;font-weight:500;border:1px solid var(--sep)}
+  .chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+  .legend{display:flex;gap:14px;font-size:12px;color:var(--label2);flex-wrap:wrap}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+</style>
+</head>
+<body>
+<header class="page">
+  <h1>오늘의 말씀 365 · 화면 예시</h1>
+  <p>토스 미니앱 · iOS 스타일 · 날짜와 문구는 모두 샘플입니다 (오늘 = 2026.11.16, 시작일 = 10.25 → 23일차)</p>
+</header>
+
+<div class="row">
+
+<!-- 1. 시작일 선택 -->
+<div class="item">
+<div class="phone"><div class="screen">
+  <div class="island"></div>
+  <div class="status"><span>9:41</span><div class="sicons"><i style="width:17px;height:10px"></i><i style="width:24px;height:11px;border-radius:3px"></i></div></div>
+  <div class="navbar"><span class="back">‹ 닫기</span><span></span><span></span></div>
+  <div class="content">
+    <div class="sub" style="color:var(--accent);font-weight:600;margin-bottom:6px">STEP 1 / 1</div>
+    <div class="large" style="font-size:28px">언제부터<br>시작할까요?</div>
+    <p class="sub" style="margin:10px 0 18px;font-size:15px;line-height:1.5">선택한 날이 <b style="color:var(--label)">1일차</b>가 돼요.<br>이미 책으로 읽고 있었다면 지난 날짜도 괜찮아요.</p>
+    <div class="card" style="padding:16px 12px 10px">
+      <div class="cal-head" style="padding:0 6px"><b>2026년 10월</b><div class="arr"><span>‹</span><span>›</span></div></div>
+      <div class="wk"><div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div></div>
+      <div class="grid" id="cal1"></div>
+    </div>
+    <div class="card" style="margin-top:12px;display:flex;align-items:center;gap:12px;padding:14px 16px">
+      <div style="flex:1">
+        <div class="sub" style="font-size:12px">1일차</div><div style="font-weight:600;font-size:15px">2026.10.25 (일)</div>
+      </div>
+      <div style="color:var(--label3)">→</div>
+      <div style="flex:1;text-align:right">
+        <div class="sub" style="font-size:12px">365일차</div><div style="font-weight:600;font-size:15px">2027.10.24 (일)</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom"><button class="btn">이 날부터 시작하기</button></div>
+</div></div>
+<div class="cap"><span>1</span>시작일 선택</div>
+</div>
+
+<!-- 2. 오늘 -->
+<div class="item">
+<div class="phone"><div class="screen">
+  <div class="island"></div>
+  <div class="status"><span>9:41</span><div class="sicons"><i style="width:17px;height:10px"></i><i style="width:24px;height:11px;border-radius:3px"></i></div></div>
+  <div class="content" style="padding-top:6px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div class="sub" style="font-weight:500">11월 16일 월요일</div>
+        <div class="large" style="margin-top:2px">23일차 <span style="color:var(--label3);font-weight:600;font-size:22px">/ 365</span></div>
+      </div>
+      <div style="position:relative;width:52px;height:52px;margin-top:4px">
+        <svg viewBox="0 0 36 36" width="52" height="52"><circle cx="18" cy="18" r="15" fill="none" stroke="#E5E5EA" stroke-width="3.5"/><circle cx="18" cy="18" r="15" fill="none" stroke="#3182F6" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="5.9 94.2" transform="rotate(-90 18 18)" pathLength="100"/></svg>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700">6%</div>
+      </div>
+    </div>
+
+    <div style="margin-top:18px;background:var(--warm);border-radius:22px;padding:22px 20px 18px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:12px;font-weight:700;color:var(--warm-ink);letter-spacing:.5px">오늘의 암송</span>
+        <span style="font-size:12px;color:var(--warm-ink);opacity:.8">👁 가리고 외우기</span>
+      </div>
+      <p style="font-size:20px;font-weight:500;line-height:1.6;margin-top:12px;letter-spacing:-.3px">주의 말씀은 내 발에 등이요<br>내 길에 빛이니이다</p>
+      <p style="margin-top:12px;font-size:14px;color:var(--warm-ink);font-weight:600">시편 119:105</p>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <div class="sub" style="font-size:12px;font-weight:600">오늘의 묵상</div>
+      <h3 style="font-size:19px;font-weight:700;margin:6px 0 10px;letter-spacing:-.3px">내 발의 등이요</h3>
+      <p style="font-size:15.5px;line-height:1.75;color:#3a3a3c">등불은 먼 길을 한꺼번에 비추지 않습니다. 다만 지금 내딛는 한 걸음을 비출 뿐입니다. 오늘 하루도 모든 것을 알지 못해도 괜찮습니다. 말씀이 비추는 만큼만 걸어가면 됩니다…</p>
+      <p style="color:var(--accent);font-size:14px;font-weight:600;margin-top:8px">계속 읽기</p>
+    </div>
+  </div>
+  <div class="bottom" style="padding-bottom:10px"><button class="btn">✏️ 느낀점 쓰기</button></div>
+  <div class="tabbar">
+    <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2h12"/><path d="M12 7v6M9 10h6"/></svg>오늘</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>달력</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>기록</div>
+  </div>
+</div></div>
+<div class="cap"><span>2</span>오늘 (홈)</div>
+</div>
+
+<!-- 3. 느낀점 작성 -->
+<div class="item">
+<div class="phone"><div class="screen" style="background:#fff">
+  <div class="island"></div>
+  <div class="status"><span>9:41</span><div class="sicons"><i style="width:17px;height:10px"></i><i style="width:24px;height:11px;border-radius:3px"></i></div></div>
+  <div class="navbar"><span class="back">취소</span><span class="ttl">23일차 느낀점</span><span class="act">저장</span></div>
+  <div class="content" style="padding-top:8px">
+    <div style="background:var(--bg);border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:center">
+      <div style="width:3px;align-self:stretch;border-radius:2px;background:var(--accent)"></div>
+      <div style="font-size:14px;line-height:1.5"><b>시편 119:105</b><br><span style="color:var(--label2)">주의 말씀은 내 발에 등이요…</span></div>
+    </div>
+    <p style="font-size:20px;font-weight:700;margin:22px 0 4px;letter-spacing:-.4px;line-height:1.4">오늘 내 길을 비추는<br>말씀은 무엇인가요?</p>
+    <p class="sub">짧게 한 줄이어도 괜찮아요</p>
+    <div style="margin-top:16px;min-height:190px;font-size:16.5px;line-height:1.75;color:var(--label)">
+      다음 주 일정이 막막했는데, 한 걸음만 비춰도 충분하다는 말이 위로가 됐다. 내일 아침 할 일 하나만 정하고 감사로 시작하기<span style="display:inline-block;width:2px;height:20px;background:var(--accent);vertical-align:-4px;margin-left:1px;animation:blink 1s infinite"></span>
+    </div>
+    <div style="text-align:right;font-size:12px;color:var(--label3);margin-bottom:14px">68 / 1,000</div>
+    <div style="border-top:.5px solid var(--sep);padding-top:14px">
+      <div class="sub" style="font-size:12px;font-weight:600;margin-bottom:10px">오늘의 마음</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <span class="chip on">🙏 감사</span><span class="chip on">🕊 위로</span><span class="chip">🌿 평안</span><span class="chip">✊ 결단</span><span class="chip">💧 회개</span><span class="chip">📝 기도제목</span>
+      </div>
+    </div>
+  </div>
+  <div class="bottom" style="background:#fff"><button class="btn">기록하고 23일차 완료</button></div>
+</div></div>
+<div class="cap"><span>3</span>느낀점 작성</div>
+</div>
+
+<!-- 4. 달력 -->
+<div class="item">
+<div class="phone"><div class="screen">
+  <div class="island"></div>
+  <div class="status"><span>9:41</span><div class="sicons"><i style="width:17px;height:10px"></i><i style="width:24px;height:11px;border-radius:3px"></i></div></div>
+  <div class="content" style="padding-top:6px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end">
+      <div class="large">달력</div>
+      <div style="color:var(--accent);font-size:15px;font-weight:600;padding-bottom:4px">오늘</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 12px">
+      <div class="card" style="padding:12px 14px"><div class="sub" style="font-size:12px">완료</div><div style="font-size:22px;font-weight:700;margin-top:2px">20<span style="font-size:13px;color:var(--label2);font-weight:500">일</span></div></div>
+      <div class="card" style="padding:12px 14px"><div class="sub" style="font-size:12px">연속</div><div style="font-size:22px;font-weight:700;margin-top:2px;color:#FF7A00">🔥4<span style="font-size:13px;color:var(--label2);font-weight:500">일</span></div></div>
+      <div class="card" style="padding:12px 14px"><div class="sub" style="font-size:12px">남은 날</div><div style="font-size:22px;font-weight:700;margin-top:2px">342<span style="font-size:13px;color:var(--label2);font-weight:500">일</span></div></div>
+    </div>
+    <div class="card" style="padding:16px 10px 12px">
+      <div class="cal-head" style="padding:0 8px"><b>2026년 11월</b><div class="arr"><span>‹</span><span>›</span></div></div>
+      <div class="wk"><div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div></div>
+      <div class="grid grid2" id="cal2"></div>
+      <div class="legend" style="padding:10px 8px 0;border-top:.5px solid var(--sep);margin-top:6px">
+        <span><i style="background:var(--accent)"></i>묵상 완료</span>
+        <span><i style="background:var(--accent-soft);border:1px solid #bcd5fb"></i>읽기만</span>
+        <span><i style="background:#fff;border:2px solid var(--accent)"></i>오늘</span>
+      </div>
+    </div>
+    <div class="card" style="margin-top:10px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+      <div style="width:40px;height:40px;border-radius:12px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;font-size:18px">🌱</div>
+      <div style="flex:1"><div style="font-weight:600;font-size:15px">10월 25일에 시작했어요</div><div class="sub" style="font-size:13px">1일차 · 시작일 변경은 설정에서</div></div>
+      <span style="color:var(--label3)">›</span>
+    </div>
+  </div>
+  <div class="tabbar">
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2h12"/><path d="M12 7v6M9 10h6"/></svg>오늘</div>
+    <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>달력</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>기록</div>
+  </div>
+</div></div>
+<div class="cap"><span>4</span>달력 · 진행 현황</div>
+</div>
+
+</div>
+
+<style>@keyframes blink{50%{opacity:0}}</style>
+<script>
+  // 1) 시작일 선택: 2026년 10월 (10/1 = 목요일), 25일 선택
+  (function(){
+    const g=document.getElementById('cal1'); let h='';
+    for(let i=0;i<4;i++) h+='<div class="d"></div>';
+    for(let d=1;d<=31;d++){
+      let c='d'; if(d===25) c+=' sel';
+      h+=`<div class="${c}"><span>${d}</span></div>`;
+    }
+    g.innerHTML=h;
+  })();
+  // 2) 달력: 2026년 11월 (11/1 = 일요일 = 8일차), 오늘 16일 = 23일차
+  (function(){
+    const g=document.getElementById('cal2'); let h='';
+    const read=[5]; const miss=[11];
+    for(let d=1;d<=30;d++){
+      const day=d+7; let c='d';
+      if(d<16){ c+= miss.includes(d)?' miss': read.includes(d)?' read':' done'; }
+      else if(d===16) c+=' today'; else c+=' future';
+      h+=`<div class="${c}"><span>${d}</span><small>${day}</small></div>`;
+    }
+    g.innerHTML=h;
+  })();
+</script>
+</body>
+</html>
