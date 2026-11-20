@@ -1,4 +1,20 @@
-import { Device, Share, User, graniteEvent } from '@apps-in-toss/web-framework';
+import { Device, SafeArea, Share, User, graniteEvent } from '@apps-in-toss/web-framework';
+
+/**
+ * 하단 안전 영역(아이폰 홈 인디케이터 등) 높이를 CSS 변수 --safe-bottom에 넣는다.
+ * 토스 앱에서는 SDK 값을 쓰고, 값을 못 받으면(웹 등) CSS의 env(safe-area-inset-bottom)을 그대로 쓴다.
+ */
+export function watchSafeAreaBottom(): () => void {
+  const apply = (bottom: unknown) => {
+    if (typeof bottom === 'number') document.documentElement.style.setProperty('--safe-bottom', `${bottom}px`);
+  };
+  try {
+    apply(SafeArea.get()?.bottom);
+    return SafeArea.subscribe({ onEvent: (insets) => apply(insets?.bottom) });
+  } catch {
+    return () => {};
+  }
+}
 
 /** 진동 설정이 꺼져 있거나 지원하지 않으면 조용히 넘어간다(토스트는 따로 뜬다). */
 export async function hapticSuccess() {

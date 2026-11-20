@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import './styles/app.css';
-import { Dialog, TabBar, Toast, type Tab } from './components/ui';
+import { Dialog, TabBar, Toast, WebTopBar, type Tab } from './components/ui';
+import { IS_WEB } from './lib/platform';
 import { TOTAL_DAYS, loadDays } from './content/days';
 import { todayYmd } from './lib/date';
-import { getUserKey, hapticSuccess, onBack, shareText } from './lib/sdk';
+import { getUserKey, hapticSuccess, onBack, shareText, watchSafeAreaBottom } from './lib/sdk';
 import {
   FONT_SCALE,
   computeStats,
@@ -89,6 +90,8 @@ export default function App() {
     return onBack(goBack);
   }, [state?.startDate, canGoBack, goBack]);
 
+  useEffect(() => watchSafeAreaBottom(), []);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [tab, stack.length, top]);
@@ -97,13 +100,25 @@ export default function App() {
     writeDirty.current = d;
   }, []);
 
-  if (!state) return <div className="canvas bg-canvas" />;
+  if (!state) {
+    // 웹은 index.html의 로딩 화면과 같은 모습을 이어서 보여 준다(깜빡임 방지)
+    return IS_WEB ? (
+      <div className="web-splash" role="status" aria-label="불러오는 중">
+        <img src="./logo-mark.png" alt="" width={48} height={52} />
+        <span>365일 묵상집</span>
+      </div>
+    ) : (
+      <div className="canvas bg-canvas" />
+    );
+  }
 
+  const appClass = IS_WEB ? 'app is-web' : 'app';
   const scaleStyle = { '--read-scale': FONT_SCALE[state.fontScale] } as CSSProperties;
 
   if (!state.startDate) {
     return (
-      <div className="app" style={scaleStyle}>
+      <div className={appClass} style={scaleStyle}>
+        {IS_WEB && <WebTopBar />}
         <Onboarding today={today} onStart={(start) => update((s) => ({ ...s, startDate: start }))} />
       </div>
     );
@@ -221,7 +236,8 @@ export default function App() {
   }
 
   return (
-    <div className="app" style={scaleStyle}>
+    <div className={appClass} style={scaleStyle}>
+      {IS_WEB && <WebTopBar onBack={stack.length > 0 ? goBack : undefined} />}
       {body}
       {toast && <Toast message={toast} onDone={() => setToast(null)} />}
       {leaveConfirm && (

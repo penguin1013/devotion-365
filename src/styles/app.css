@@ -21,7 +21,10 @@
   --brand-text: #8a6400; /* 흰 면 위 강조 글자(대비 약 5:1) */
   --radius-card: 20px;
   --radius-btn: 16px;
-  --tabbar-h: calc(58px + max(34px, env(safe-area-inset-bottom)));
+  /* 하단 안전 영역. 토스 앱에서는 SDK 값으로 덮어쓴다(src/lib/sdk.ts watchSafeAreaBottom) */
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  /* 탭바: 위 여백 6 + 탭 52 + 아래 여백(안전 영역, 최소 8) */
+  --tabbar-h: calc(58px + max(8px, var(--safe-bottom)));
   --read-scale: 1;
   --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
     'Tossface', system-ui, 'Malgun Gothic', sans-serif;
@@ -308,50 +311,109 @@ button.card {
   left: 50%;
   z-index: 10;
   display: flex;
+  gap: 6px;
   width: 100%;
   max-width: 480px;
   height: var(--tabbar-h);
-  padding: 6px 8px max(34px, env(safe-area-inset-bottom));
+  padding: 6px 10px max(8px, var(--safe-bottom));
   transform: translateX(-50%);
   border-top: 1px solid var(--app-sep);
-  background: color-mix(in srgb, var(--color-bg) 86%, transparent);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--color-bg);
 }
 
+/* 탭 한 칸 전체가 버튼이고, 선택되면 칸 전체가 둥근 네모로 채워진다 */
 .tab {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: 3px;
+  min-width: 0;
   border: none;
+  border-radius: 14px;
   background: transparent;
   font-size: var(--font-size-caption);
-  font-weight: 500;
+  font-weight: 600;
+  line-height: 1;
   color: var(--color-text-hint);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.tab:active {
+  background: var(--color-bg-canvas);
 }
 
 .tab-icon {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 52px;
-  height: 30px;
-  border-radius: 15px;
-  transition: background 0.15s;
 }
 
 .tab.is-on {
-  font-weight: 700;
-  color: var(--color-text-strong);
-}
-
-.tab.is-on .tab-icon {
   background: var(--brand-primary);
   color: var(--brand-on);
+  font-weight: 700;
+}
+
+/* ---------- 웹사이트 버전 상단 바 ---------- */
+
+.web-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 52px;
+  padding: 0 var(--space-4) 0 6px;
+  background: var(--color-bg);
+}
+
+.web-topbar-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--color-text-strong);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.web-topbar-back:active {
+  background: var(--color-bg-canvas);
+}
+
+.web-topbar-gap {
+  width: 10px;
+}
+
+.web-topbar-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-text-strong);
+  letter-spacing: -0.3px;
+}
+
+.web-topbar-title img {
+  display: block;
+  width: 20px;
+  height: auto;
+}
+
+/* 상단 바(52px)만큼 화면 높이를 줄여 처음부터 스크롤이 생기지 않게 한다 */
+.is-web .screen {
+  min-height: calc(100vh - 52px);
+  min-height: calc(100dvh - 52px);
 }
 
 /* ---------- 오늘 ---------- */

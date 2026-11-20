@@ -41,6 +41,12 @@ export const Share = {
   },
 };
 
+/** 웹은 CSS env(safe-area-inset-bottom)으로 처리하므로 값을 주지 않는다. */
+export const SafeArea = {
+  get: () => undefined,
+  subscribe: () => () => {},
+};
+
 /** 웹에는 토스 사용자 식별키가 없다. 앱은 키 없이도 그대로 동작한다. */
 const getAnonymousKey = Object.assign(async () => ({ type: 'NONE' as const }), {
   isSupported: () => false,

@@ -1,5 +1,5 @@
 import { useEffect, type ReactNode } from 'react';
-import { Close } from './icons';
+import { ChevronLeft, Close } from './icons';
 import { BookIcon, CalendarIcon, ListIcon } from './appIcons';
 
 export type Tab = 'today' | 'calendar' | 'records';
@@ -22,12 +22,34 @@ export function TabBar({ tab, onChange }: { tab: Tab; onChange: (t: Tab) => void
           onClick={() => onChange(id)}
         >
           <span className="tab-icon">
-            <Icon size={22} />
+            <Icon size={24} />
           </span>
           <span>{label}</span>
         </button>
       ))}
     </nav>
+  );
+}
+
+/**
+ * 웹사이트 버전 전용 상단 바. 토스 앱은 자체 상단 바(뒤로가기·앱 이름)가 있어서 쓰지 않는다.
+ * onBack이 있으면(하위 화면) 뒤로가기 버튼을 보여 준다.
+ */
+export function WebTopBar({ onBack }: { onBack?: () => void }) {
+  return (
+    <header className="web-topbar">
+      {onBack ? (
+        <button type="button" className="web-topbar-back" aria-label="뒤로 가기" onClick={onBack}>
+          <ChevronLeft size={26} />
+        </button>
+      ) : (
+        <span className="web-topbar-gap" aria-hidden="true" />
+      )}
+      <span className="web-topbar-title">
+        <img src="./logo-mark.png" alt="" width={20} height={22} />
+        365일 묵상집
+      </span>
+    </header>
   );
 }
 
